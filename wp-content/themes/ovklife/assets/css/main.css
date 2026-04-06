@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+ * Базовые стили OVKLife
+ * ============================================================================ */
+
+@layer base {
+  body {
+    @apply min-h-screen bg-white text-secondary-900;
+  }
+
+  a {
+    @apply text-primary-600 transition-colors hover:text-primary-700;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold leading-tight text-secondary-900;
+  }
+}
+
+/* ============================================================================
+ * Компоненты
+ * ============================================================================ */
+
+@layer components {
+  /* Кнопки */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-medium transition-all;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white shadow-sm hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply border border-secondary-300 bg-white text-secondary-700 shadow-sm hover:bg-secondary-50 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
+  }
+
+  /* Секции -->*/
+  .section {
+    @apply px-4 py-16 sm:px-6 lg:px-8;
+  }
+
+  .section-title {
+    @apply mb-4 text-3xl font-bold text-secondary-900 sm:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply mb-12 text-lg text-secondary-600;
+  }
+
+  /* Контейнер -->*/
+  .container-narrow {
+    @apply mx-auto max-w-7xl;
+  }
+}
+
+/* ============================================================================
+ * WordPress-специфичные стили
+ * ============================================================================ */
+
+/* Выравнивание изображений WP */
+.alignleft {
+  @apply float-left mr-6 mb-4;
+}
+
+.alignright {
+  @apply float-right ml-6 mb-4;
+}
+
+.aligncenter {
+  @apply mx-auto mb-4 block;
+}
+
+/* WP Caption */
+.wp-caption {
+  @apply mb-4 max-w-full;
+}
+
+.wp-caption-text {
+  @apply mt-2 text-center text-sm text-secondary-500;
+}
+
+/* Навигационные меню WP */
+.menu li a {
+  @apply text-sm font-medium text-secondary-600 transition hover:text-primary-600;
+}
+
+footer .menu li a {
+  @apply text-secondary-400 hover:text-white;
+}

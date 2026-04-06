@@ -1,0 +1,64 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    name: Build & Deploy Theme to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Установка Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: wp-content/themes/ovklife/package-lock.json
+
+      - name: Установка зависимостей темы
+        run: |
+          cd wp-content/themes/ovklife
+          npm ci
+
+      - name: Сборка темы (production)
+        run: |
+          cd wp-content/themes/ovklife
+          npm run build
+
+      - name: Подготовка SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: rsync темы на staging
+        run: |
+          rsync -avz --delete \
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude 'assets' \
+            wp-content/themes/ovklife/ \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.STAGING_PATH }}/wp-content/themes/ovklife/
+
+      - name: Очистка кэша WordPress
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "cd ${{ secrets.STAGING_PATH }} && wp cache flush --allow-root 2>/dev/null || true"
+
+      - name: Health check
+        run: |
+          sleep 5
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://staging.ovklife.ru || echo "000")
+          echo "HTTP Status: $RESPONSE"
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "301" ] || [ "$RESPONSE" = "302" ]; then
+            echo "✅ Staging deploy successful"
+          else
+            echo "⚠️ Warning: HTTP $RESPONSE (может потребоваться проверка)"
+          fi

@@ -1,0 +1,47 @@
+name: Quality Gate
+
+on:
+  pull_request:
+    branches: [dev, staging]
+  push:
+    branches: [dev]
+
+jobs:
+  quality-check:
+    name: PHPCS + ESLint + Stylelint + Prettier
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Установка PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Установка Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Установка Composer зависимостей
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Установка NPM зависимостей
+        run: npm ci
+
+      - name: PHP_CodeSniffer (WPCS)
+        run: npm run phpcs
+
+      - name: ESLint
+        run: npm run eslint:check
+
+      - name: Stylelint
+        run: npm run stylelint
+
+      - name: Prettier check
+        run: npm run format:check

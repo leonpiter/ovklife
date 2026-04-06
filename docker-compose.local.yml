@@ -1,0 +1,59 @@
+version: '3.8'
+
+# Локальная разработка OVKLife WordPress
+# Запуск: docker compose -f docker-compose.local.yml up -d
+# Доступ: WordPress http://localhost:8080, phpMyAdmin http://localhost:8081
+
+services:
+  wordpress:
+    image: wordpress:6.7-php8.2-apache
+    container_name: ovklife-wordpress
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: ovklife_dev
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DEBUG: 'true'
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', true);
+        define('SCRIPT_DEBUG', true);
+    volumes:
+      - ./wp-content/themes/ovklife:/var/www/html/wp-content/themes/ovklife
+      - wordpress_data:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: ovklife-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: ovklife_dev
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: ovklife-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root_password
+    depends_on:
+      - mysql
+
+volumes:
+  wordpress_data:
+  mysql_data:

@@ -1,0 +1,21 @@
+{
+  "name": "ovklife/wordpress-site",
+  "description": "OVKLife — WordPress корпоративный сайт",
+  "type": "project",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.7",
+    "wp-coding-standards/wpcs": "^3.1",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "scripts": {
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf"
+  }
+}

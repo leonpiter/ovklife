@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<ruleset name="OVKLife WordPress Coding Standards">
+    <description>Стандарты кодирования для проекта OVKLife WordPress</description>
+
+    <!-- Сканировать эти пути -->
+    <file>./wp-content/themes/ovklife</file>
+
+    <!-- Исключить пути -->
+    <exclude-pattern>*/dist/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
+    <exclude-pattern>*.min.css</exclude-pattern>
+    <exclude-pattern>*.asset.php</exclude-pattern>
+
+    <!-- Использовать WordPress Coding Standards -->
+    <rule ref="WordPress">
+        <!-- Разрешить короткий синтаксис массивов -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+        <!-- Разрешить короткий тернарный оператор -->
+        <exclude name="WordPress.PHP.DisallowShortTernary"/>
+    </rule>
+
+    <!-- Проверка совместимости с PHP 8.2+ -->
+    <config name="testVersion" value="8.2-"/>
+    <rule ref="PHPCompatibility"/>
+
+    <!-- Проверки безопасности -->
+    <rule ref="WordPress.Security"/>
+
+    <!-- Имя текстового домена темы -->
+    <config name="text_domain" value="ovklife"/>
+
+    <!-- Минимальная поддерживаемая версия WordPress -->
+    <config name="minimum_wp_version" value="6.4"/>
+
+    <!-- Показывать прогресс -->
+    <arg value="ps"/>
+
+    <!-- Цветной вывод -->
+    <arg name="colors"/>
+
+    <!-- Параллельная обработка -->
+    <arg name="parallel" value="8"/>
+
+    <!-- Кодировка -->
+    <arg name="encoding" value="utf-8"/>
+
+    <!-- Показывать только ошибки и предупреждения -->
+    <arg name="extensions" value="php"/>
+</ruleset>

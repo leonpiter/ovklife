@@ -1,0 +1,8 @@
+node_modules
+vendor
+dist
+*.min.js
+*.min.css
+wp-admin
+wp-includes
+wp-content/uploads
