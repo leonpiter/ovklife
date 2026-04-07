@@ -1,7 +1,7 @@
 # Sprint-03: Вёрстка главной страницы — 6 секций по Tilda-дизайну
 
-> **Статус:** ⏳ Ожидает
-> **Ветка:** `feature/sprint-03-homepage-sections`
+> **Статус:** ✅ Готов (07.04.2026)
+> **Ветка:** `feature/sprint-03-landing-sections`
 > **Зависимости:** Sprint-02 (лейаут, header/footer)
 > **Результат:** полностью свёрстанная главная страница, pixel-perfect по Tilda
 
@@ -67,42 +67,42 @@
 ## Чеклист задач
 
 ### Секция 1: Hero
-- [ ] Верстка `template-parts/landing/section-hero.php`
-- [ ] CSS: `assets/css/landing/sections/hero.css`
-- [ ] JS: `assets/js/landing/slider.js` — слайдер с touch-свайпом
-- [ ] Адаптивность: 320px / 640px / 1200px
-- [ ] Preload Hero-изображения для LCP
+- [x] Верстка `template-parts/landing/section-hero.php`
+- [x] CSS: `assets/css/landing/sections/hero.css`
+- [x] JS: `assets/js/landing/slider.js` — слайдер с touch-свайпом
+- [x] Адаптивность: 320px / 640px / 1200px
+- [x] Preload Hero-изображения для LCP (fetchpriority="high")
 
 ### Секция 2: Объекты
-- [ ] Верстка `template-parts/landing/section-objects.php`
-- [ ] CSS: `assets/css/landing/sections/objects.css`
-- [ ] Lazy loading для изображений
+- [x] Верстка `template-parts/landing/section-objects.php`
+- [x] CSS: `assets/css/landing/sections/objects.css`
+- [x] Lazy loading для изображений (data-src + IntersectionObserver)
 
 ### Секция 3: Этапы работ
-- [ ] Верстка `template-parts/landing/section-stages.php`
-- [ ] CSS: `assets/css/landing/sections/stages.css`
-- [ ] SVG-иконки inline или из файлов
+- [x] Верстка `template-parts/landing/section-stages.php`
+- [x] CSS: `assets/css/landing/sections/stages.css`
+- [x] SVG-иконки inline через ovklife_svg_icon()
 
 ### Секция 4: Услуги
-- [ ] Верстка `template-parts/landing/section-services.php`
-- [ ] CSS: `assets/css/landing/sections/services.css`
-- [ ] SVG-иконки для 4 направлений
+- [x] Верстка `template-parts/landing/section-services.php`
+- [x] CSS: `assets/css/landing/sections/services.css`
+- [x] SVG-иконки для 5 направлений (отопление, вентиляция, электрика, вода, автоматика)
 
 ### Секция 5: Пример проекта
-- [ ] Верстка `template-parts/landing/section-case-study.php`
-- [ ] CSS: `assets/css/landing/sections/case-study.css`
-- [ ] Галерея фотографий проекта
+- [x] Верстка `template-parts/landing/section-case-study.php`
+- [x] CSS: `assets/css/landing/sections/case-study.css`
+- [x] Галерея из 3 фотографий проекта
 
 ### Секция 6: Обратная связь
-- [ ] Верстка `template-parts/landing/section-contact.php`
-- [ ] CSS: `assets/css/landing/sections/contact.css`
+- [x] Верстка `template-parts/landing/section-contact.php`
+- [x] CSS: `assets/css/landing/sections/contact.css`
 
 ### Общее
-- [ ] `assets/js/landing/animations.js` — scroll-анимации (IntersectionObserver)
-- [ ] `assets/js/landing/lazy-load.js` — ленивая загрузка
+- [x] `assets/js/landing/animations.js` — scroll-анимации (IntersectionObserver)
+- [x] `assets/js/landing/lazy-load.js` — ленивая загрузка
 - [ ] Проверка pixel-perfect: открыть Tilda-экспорт и WordPress рядом
-- [ ] Адаптивность всех секций: 320px, 640px, 1200px
-- [ ] `npm run validate` — 0 ошибок
+- [x] Адаптивность всех секций: 320px, 640px, 1200px
+- [x] `npm run validate` — 0 ошибок
 
 ---
 
