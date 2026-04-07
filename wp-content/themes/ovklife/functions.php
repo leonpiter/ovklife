@@ -29,6 +29,16 @@ require_once get_template_directory() . '/inc/post-types.php';
 require_once get_template_directory() . '/inc/customizer.php';
 
 /**
+ * SEO-модуль — Schema.org, мета-теги, Open Graph.
+ */
+require_once get_template_directory() . '/inc/seo.php';
+
+/**
+ * Утилиты для лендингов — хелперы для шаблонов.
+ */
+require_once get_template_directory() . '/inc/landing-helpers.php';
+
+/**
  * Настройка темы — вызывается после инициализации.
  */
 function ovklife_setup() {
@@ -66,8 +76,8 @@ function ovklife_setup() {
 	// Регистрация меню.
 	register_nav_menus(
 		[
-			'primary'   => esc_html__( 'Главное меню', 'ovklife' ),
-			'footer'    => esc_html__( 'Меню подвала', 'ovklife' ),
+			'primary' => esc_html__( 'Главное меню', 'ovklife' ),
+			'footer'  => esc_html__( 'Меню подвала', 'ovklife' ),
 		]
 	);
 

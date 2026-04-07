@@ -37,7 +37,7 @@ get_header();
 					<div class="p-6">
 						<h2 class="mb-2 text-xl font-semibold">
 							<a href="<?php the_permalink(); ?>"
-							   class="text-secondary-900 transition hover:text-primary-600">
+								class="text-secondary-900 transition hover:text-primary-600">
 								<?php the_title(); ?>
 							</a>
 						</h2>

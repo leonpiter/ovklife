@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Локальная разработка OVKLife WordPress
 # Запуск: docker compose -f docker-compose.local.yml up -d
 # Доступ: WordPress http://localhost:8080, phpMyAdmin http://localhost:8081
@@ -21,6 +19,8 @@ services:
         define('WP_DEBUG_LOG', true);
         define('WP_DEBUG_DISPLAY', true);
         define('SCRIPT_DEBUG', true);
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     volumes:
       - ./wp-content/themes/ovklife:/var/www/html/wp-content/themes/ovklife
       - wordpress_data:/var/www/html

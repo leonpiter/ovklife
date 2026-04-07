@@ -25,12 +25,7 @@
   },
   "permissions": {
     "allow": [
-      "Bash(npm run *)",
-      "Bash(git *)",
-      "Bash(composer *)",
-      "Bash(ls *)",
-      "Bash(mkdir *)",
-      "Bash(cat *)",
+      "Bash(*)",
       "Read",
       "Write",
       "Edit",

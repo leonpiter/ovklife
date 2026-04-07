@@ -17,7 +17,7 @@ get_header();
 		<?php esc_html_e( 'Страница не найдена', 'ovklife' ); ?>
 	</p>
 	<a href="<?php echo esc_url( home_url( '/' ) ); ?>"
-	   class="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-white transition hover:bg-primary-700">
+		class="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-white transition hover:bg-primary-700">
 		<?php esc_html_e( 'На главную', 'ovklife' ); ?>
 	</a>
 </div>

@@ -53,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="hidden items-center gap-2 lg:flex">
 				<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>"
-				   class="text-lg font-semibold text-primary-700 transition hover:text-primary-500">
+					class="text-lg font-semibold text-primary-700 transition hover:text-primary-500">
 					<?php echo esc_html( $phone ); ?>
 				</a>
 			</div>

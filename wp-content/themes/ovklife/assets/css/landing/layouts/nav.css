@@ -1,0 +1,359 @@
+/**
+ * OVKLife Landing — Навигация
+ *
+ * Фиксированная шапка с логотипом и бургер-меню.
+ * Выдвижная панель справа с меню, контактами и CTA.
+ * Источник: Tilda-экспорт (rec2057160851, nav2071454351).
+ *
+ * @see docs/design-guide.md
+ */
+
+/* ==========================================================================
+   Навигация (фиксированная шапка)
+   ========================================================================== */
+
+.landing-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 53px;
+  background-color: var(--color-dark);
+  z-index: 1000;
+}
+
+.landing-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Логотип */
+.landing-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.landing-nav__logo:hover {
+  color: var(--color-white);
+}
+
+.landing-nav__logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.landing-nav__logo-text {
+  height: 20px;
+  width: auto;
+}
+
+/* Бургер-кнопка */
+.landing-nav__burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.landing-nav__burger:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.landing-nav__burger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-white);
+  border-radius: 1px;
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-base);
+}
+
+/* ==========================================================================
+   Выдвижное меню (панель справа)
+   ========================================================================== */
+
+.landing-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  pointer-events: none;
+}
+
+/* Затемнение фона */
+.landing-menu__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-dark);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+/* Панель */
+.landing-menu__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
+  max-width: 300px;
+  height: 100%;
+  background-color: var(--color-dark);
+  transform: translateX(100%);
+  transition: transform var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Состояние: меню открыто */
+.landing-menu--open {
+  pointer-events: auto;
+}
+
+.landing-menu--open .landing-menu__overlay {
+  opacity: 1;
+}
+
+.landing-menu--open .landing-menu__panel {
+  transform: translateX(0);
+}
+
+/* Блокировка скролла */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Кнопка закрытия */
+.landing-menu__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.landing-menu__close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.landing-menu__close-icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.landing-menu__close-icon::before,
+.landing-menu__close-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-white);
+  border-radius: 1px;
+}
+
+.landing-menu__close-icon::before {
+  transform: rotate(45deg);
+}
+
+.landing-menu__close-icon::after {
+  transform: rotate(-45deg);
+}
+
+/* ==========================================================================
+   Список меню
+   ========================================================================== */
+
+.landing-menu__list {
+  padding: 60px 30px 20px;
+}
+
+.landing-menu__item {
+  padding: 15px 0;
+}
+
+.landing-menu__item:first-child {
+  padding-top: 0;
+}
+
+.landing-menu__link {
+  position: relative;
+  display: inline-block;
+  color: var(--color-light);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.landing-menu__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-light);
+  transition: width var(--transition-base);
+}
+
+.landing-menu__link:hover {
+  color: var(--color-white);
+}
+
+.landing-menu__link:hover::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Контакты в меню
+   ========================================================================== */
+
+.landing-menu__contacts {
+  padding: 20px 30px 30px;
+  margin-top: auto;
+}
+
+.landing-menu__phone {
+  display: block;
+  color: var(--color-light);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-light);
+  padding-bottom: 2px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.landing-menu__phone:hover {
+  color: var(--color-white);
+}
+
+.landing-menu__telegram {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.landing-menu__telegram-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.landing-menu__telegram-link {
+  color: var(--color-light);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+.landing-menu__telegram-link:hover {
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   Кнопка CTA в меню
+   ========================================================================== */
+
+.landing-menu__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 30px 30px;
+  padding: 12px 24px;
+  color: var(--color-white);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-decoration: none;
+  border: 1px solid #9a9791;
+  border-radius: var(--radius-xl);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.landing-menu__cta:hover {
+  background-color: rgb(255 255 255 / 10%);
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   Отступ контента от фиксированной навигации
+   ========================================================================== */
+
+.landing-main {
+  padding-top: 53px;
+}
+
+/* ==========================================================================
+   Sticky footer: основной контент поверх footer
+   ========================================================================== */
+
+@media (width >= 1200px) {
+  .landing-main {
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-white);
+  }
+}
+
+/* ==========================================================================
+   Адаптивность
+   ========================================================================== */
+
+/* Планшет */
+@media (width <= 980px) {
+  .landing-nav {
+    height: 50px;
+  }
+
+  .landing-main {
+    padding-top: 50px;
+  }
+}
+
+/* Мобильный */
+@media (width <= 640px) {
+  .landing-nav {
+    height: 58px;
+  }
+
+  .landing-main {
+    padding-top: 58px;
+  }
+
+  .landing-menu__list {
+    padding: 60px 25px 20px;
+  }
+
+  .landing-menu__contacts {
+    padding: 20px 25px 25px;
+  }
+
+  .landing-menu__cta {
+    margin: 0 25px 25px;
+  }
+}
