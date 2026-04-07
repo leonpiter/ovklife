@@ -283,3 +283,30 @@ p:last-child {
     padding-bottom: 40px;
   }
 }
+
+/* ==========================================================================
+   Scroll-анимации (IntersectionObserver)
+   ========================================================================== */
+
+.animate-ready {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ленивая загрузка изображений */
+img.lazy {
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+img.lazy[src]:not([data-src]) {
+  opacity: 1;
+}

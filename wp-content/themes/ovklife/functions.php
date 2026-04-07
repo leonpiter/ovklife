@@ -39,6 +39,11 @@ require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/landing-helpers.php';
 
 /**
+ * Модульная система секций лендинга — data.php + вариантные шаблоны.
+ */
+require_once get_template_directory() . '/inc/landing-sections.php';
+
+/**
  * Настройка темы — вызывается после инициализации.
  */
 function ovklife_setup() {
