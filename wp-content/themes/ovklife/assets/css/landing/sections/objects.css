@@ -1,4 +1,225 @@
 /**
  * OVKLife Landing — Секция Объекты
- * Наполняется в Sprint-03
+ *
+ * Галерея проектов со слайдером, карточками объектов
+ * и touch-свайпом на мобильных.
  */
+
+/* ==========================================================================
+   Заголовок секции
+   ========================================================================== */
+
+.objects__header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.objects__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+}
+
+.objects__title {
+  font-size: var(--text-h2);
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   Слайдер
+   ========================================================================== */
+
+.objects__slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.objects__slider-track {
+  display: flex;
+  transition: transform var(--transition-slow);
+}
+
+.objects__slide {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Изображение слайда
+   ========================================================================== */
+
+.objects__slide-image {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.objects__slide-image img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   Информация о проекте
+   ========================================================================== */
+
+.objects__slide-info {
+  padding: 20px 0;
+}
+
+.objects__slide-title {
+  font-size: var(--text-h3);
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.objects__slide-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.objects__slide-type {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.objects__slide-area {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: rgb(186 150 97 / 10%);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+
+.objects__slide-works {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.objects__slide-works-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* ==========================================================================
+   Навигация слайдера
+   ========================================================================== */
+
+.objects__slider-prev,
+.objects__slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+  z-index: 2;
+  transition: all var(--transition-fast);
+}
+
+.objects__slider-prev:hover,
+.objects__slider-next:hover {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+.objects__slider-prev {
+  left: -24px;
+}
+
+.objects__slider-next {
+  right: -24px;
+}
+
+.objects__slider-arrow--prev {
+  transform: rotate(180deg);
+}
+
+/* Точки навигации */
+.objects__slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.objects__slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-gray-light);
+  transition: background-color var(--transition-fast);
+}
+
+.objects__slider-dot--active {
+  background-color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Адаптивность
+   ========================================================================== */
+
+/* Планшет */
+@media (width <= 980px) {
+  .objects__slide {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .objects__slide-image img {
+    height: 300px;
+  }
+
+  .objects__slider-prev,
+  .objects__slider-next {
+    display: none;
+  }
+}
+
+/* Мобильный */
+@media (width <= 640px) {
+  .objects__header {
+    margin-bottom: 30px;
+  }
+
+  .objects__slide-image img {
+    height: 220px;
+  }
+
+  .objects__slide-info {
+    padding: 0;
+  }
+
+  .objects__slide-title {
+    font-size: var(--text-body);
+  }
+
+  .objects__slide-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
