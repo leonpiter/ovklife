@@ -56,7 +56,7 @@ defined( 'ABSPATH' ) || exit;
 						?>
 						<li>
 							<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>"
-							   class="transition hover:text-white">
+								class="transition hover:text-white">
 								<?php echo esc_html( $phone ); ?>
 							</a>
 						</li>
@@ -65,7 +65,7 @@ defined( 'ABSPATH' ) || exit;
 					<?php if ( $email ) : ?>
 						<li>
 							<a href="mailto:<?php echo esc_attr( $email ); ?>"
-							   class="transition hover:text-white">
+								class="transition hover:text-white">
 								<?php echo esc_html( $email ); ?>
 							</a>
 						</li>

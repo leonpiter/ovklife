@@ -18,7 +18,7 @@
         <!-- Разрешить короткий синтаксис массивов -->
         <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
         <!-- Разрешить короткий тернарный оператор -->
-        <exclude name="WordPress.PHP.DisallowShortTernary"/>
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
     </rule>
 
     <!-- Проверка совместимости с PHP 8.2+ -->
