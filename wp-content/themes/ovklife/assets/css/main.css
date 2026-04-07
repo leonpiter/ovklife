@@ -8,11 +8,11 @@
 
 @layer base {
   body {
-    @apply min-h-screen bg-white text-secondary-900;
+    @apply text-secondary-900 min-h-screen bg-white;
   }
 
   a {
-    @apply text-primary-600 transition-colors hover:text-primary-700;
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
   }
 
   h1,
@@ -21,7 +21,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold leading-tight text-secondary-900;
+    @apply text-secondary-900 font-bold leading-tight;
   }
 }
 
@@ -36,27 +36,27 @@
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white shadow-sm hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 text-white shadow-sm focus:ring-2 focus:ring-offset-2;
   }
 
   .btn-secondary {
-    @apply border border-secondary-300 bg-white text-secondary-700 shadow-sm hover:bg-secondary-50 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
+    @apply border-secondary-300 text-secondary-700 hover:bg-secondary-50 focus:ring-secondary-500 border bg-white shadow-sm focus:ring-2 focus:ring-offset-2;
   }
 
-  /* Секции -->*/
+  /* Секции --> */
   .section {
     @apply px-4 py-16 sm:px-6 lg:px-8;
   }
 
   .section-title {
-    @apply mb-4 text-3xl font-bold text-secondary-900 sm:text-4xl;
+    @apply text-secondary-900 mb-4 text-3xl font-bold sm:text-4xl;
   }
 
   .section-subtitle {
-    @apply mb-12 text-lg text-secondary-600;
+    @apply text-secondary-600 mb-12 text-lg;
   }
 
-  /* Контейнер -->*/
+  /* Контейнер --> */
   .container-narrow {
     @apply mx-auto max-w-7xl;
   }
@@ -68,11 +68,11 @@
 
 /* Выравнивание изображений WP */
 .alignleft {
-  @apply float-left mr-6 mb-4;
+  @apply float-left mb-4 mr-6;
 }
 
 .alignright {
-  @apply float-right ml-6 mb-4;
+  @apply float-right mb-4 ml-6;
 }
 
 .aligncenter {
@@ -85,12 +85,12 @@
 }
 
 .wp-caption-text {
-  @apply mt-2 text-center text-sm text-secondary-500;
+  @apply text-secondary-500 mt-2 text-center text-sm;
 }
 
 /* Навигационные меню WP */
 .menu li a {
-  @apply text-sm font-medium text-secondary-600 transition hover:text-primary-600;
+  @apply text-secondary-600 hover:text-primary-600 text-sm font-medium transition;
 }
 
 footer .menu li a {

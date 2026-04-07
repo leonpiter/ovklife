@@ -1,0 +1,180 @@
+/**
+ * OVKLife Landing — Подвал
+ *
+ * Тёмный footer с логотипом, контактами и навигацией.
+ * Sticky footer на desktop (≥1200px) — фиксирован внизу,
+ * контент «открывает» его при скролле.
+ * Источник: Tilda-экспорт (rec2058088741).
+ *
+ * @see docs/design-guide.md
+ */
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.landing-footer {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  padding: 60px 0 30px;
+}
+
+.landing-footer__top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Логотип */
+.landing-footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.landing-footer__logo:hover {
+  color: var(--color-white);
+}
+
+.landing-footer__logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.landing-footer__logo-text {
+  height: 20px;
+  width: auto;
+}
+
+/* Контакты */
+.landing-footer__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.landing-footer__phone {
+  color: var(--color-light);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.landing-footer__phone:hover {
+  color: var(--color-white);
+}
+
+.landing-footer__telegram {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.landing-footer__telegram-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.landing-footer__telegram-link {
+  color: var(--color-gray-light);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.landing-footer__telegram-link:hover {
+  color: var(--color-white);
+}
+
+/* Навигация подвала */
+.landing-footer__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.landing-footer__nav-link {
+  color: var(--color-gray-light);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.landing-footer__nav-link:hover {
+  color: var(--color-white);
+}
+
+/* Нижняя полоса */
+.landing-footer__bottom {
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  padding-top: 20px;
+  margin-top: 40px;
+}
+
+.landing-footer__copy {
+  color: var(--color-gray);
+  font-size: var(--text-xs);
+  letter-spacing: -0.3px;
+}
+
+/* ==========================================================================
+   Sticky footer (desktop)
+   ========================================================================== */
+
+@media (width >= 1200px) {
+  .landing-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+  }
+}
+
+/* ==========================================================================
+   Адаптивность
+   ========================================================================== */
+
+/* Планшет */
+@media (width <= 980px) {
+  .landing-footer__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .landing-footer__nav {
+    grid-column: 1 / -1;
+  }
+
+  .landing-footer__nav-list {
+    flex-flow: row wrap;
+    gap: 8px 20px;
+  }
+
+  .landing-footer {
+    padding: 40px 0 25px;
+  }
+}
+
+/* Мобильный */
+@media (width <= 640px) {
+  .landing-footer__top {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .landing-footer {
+    padding: 30px 0 20px;
+  }
+
+  .landing-footer__bottom {
+    margin-top: 25px;
+    padding-top: 15px;
+  }
+}

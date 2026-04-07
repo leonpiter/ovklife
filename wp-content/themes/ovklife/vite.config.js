@@ -10,6 +10,8 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'assets/js/main.js'),
         style: path.resolve(__dirname, 'assets/css/main.css'),
+        landing: path.resolve(__dirname, 'assets/js/landing/main.js'),
+        'landing-style': path.resolve(__dirname, 'assets/css/landing/base.css'),
       },
       output: {
         entryFileNames: 'js/[name].[hash].js',
@@ -28,9 +30,11 @@ export default defineConfig({
     },
   },
   server: {
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 5173,
     strictPort: true,
     cors: true,
+    origin: 'http://localhost:5173',
+    allowedHosts: ['host.docker.internal'],
   },
 });

@@ -8,9 +8,9 @@
     "build": "npm run build --prefix wp-content/themes/ovklife",
     "watch": "npm run watch --prefix wp-content/themes/ovklife",
 
-    "phpcs": "vendor/bin/phpcs",
-    "phpcbf": "vendor/bin/phpcbf",
-    "phpcs:fix": "vendor/bin/phpcbf",
+    "phpcs": "bash scripts/phpcs-docker.sh",
+    "phpcbf": "bash scripts/phpcbf-docker.sh",
+    "phpcs:fix": "bash scripts/phpcbf-docker.sh",
 
     "eslint": "eslint wp-content/themes/ovklife/assets/js/",
     "eslint:fix": "eslint wp-content/themes/ovklife/assets/js/ --fix",
@@ -38,7 +38,7 @@
   },
   "lint-staged": {
     "wp-content/themes/ovklife/**/*.php": [
-      "vendor/bin/phpcs --standard=phpcs.xml"
+      "bash scripts/phpcs-docker.sh"
     ],
     "wp-content/themes/ovklife/assets/js/**/*.js": [
       "prettier --write",
