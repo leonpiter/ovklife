@@ -185,6 +185,62 @@ function ovklife_schema_breadcrumbs() {
 }
 
 /**
+ * Возвращает массив Service Schema.org для секции «Услуги» на главной.
+ *
+ * @return array Массив Service schema.
+ */
+function ovklife_schema_services() {
+	$services = [
+		[
+			'name'        => 'Монтаж отопления',
+			'description' => 'Проектирование и монтаж систем отопления для загородных домов в СПб и ЛО',
+		],
+		[
+			'name'        => 'Монтаж вентиляции и кондиционирования',
+			'description' => 'Приточно-вытяжная вентиляция и кондиционирование для частных домов',
+		],
+		[
+			'name'        => 'Электромонтажные работы',
+			'description' => 'Электроснабжение загородного дома — проводка, щиты, автоматика',
+		],
+		[
+			'name'        => 'Водоснабжение и канализация',
+			'description' => 'Монтаж водоснабжения и канализации для загородных домов',
+		],
+		[
+			'name'        => 'Автоматизация инженерных систем',
+			'description' => 'Управление инженерными системами и слаботочные сети',
+		],
+	];
+
+	$schemas = [];
+	foreach ( $services as $service ) {
+		$schemas[] = [
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Service',
+			'name'        => $service['name'],
+			'description' => $service['description'],
+			'provider'    => [
+				'@type' => 'Organization',
+				'name'  => 'OVK Life',
+			],
+			'areaServed'  => [
+				[
+					'@type' => 'City',
+					'name'  => 'Санкт-Петербург',
+				],
+				[
+					'@type' => 'State',
+					'name'  => 'Ленинградская область',
+				],
+			],
+		];
+	}
+
+	return $schemas;
+}
+
+/**
  * Выводит все Schema.org JSON-LD в <head>.
  */
 function ovklife_output_schema() {
@@ -196,6 +252,11 @@ function ovklife_output_schema() {
 	// LocalBusiness — на главной и странице контактов.
 	if ( is_front_page() || is_page( 'kontakty' ) ) {
 		$schemas[] = ovklife_schema_local_business();
+	}
+
+	// Service — на главной (секция «Услуги»).
+	if ( is_front_page() ) {
+		$schemas = array_merge( $schemas, ovklife_schema_services() );
 	}
 
 	// BreadcrumbList — на всех, кроме главной.
@@ -213,6 +274,44 @@ function ovklife_output_schema() {
 	}
 }
 add_action( 'wp_head', 'ovklife_output_schema', 1 );
+
+/**
+ * Настраивает robots.txt через WordPress фильтр.
+ *
+ * @param string $output  Текущее содержимое robots.txt.
+ * @param bool   $is_public True если сайт открыт для индексации.
+ * @return string Обновлённое содержимое robots.txt.
+ */
+function ovklife_robots_txt( $output, $is_public ) {
+	if ( ! $is_public ) {
+		return $output;
+	}
+
+	$output  = "User-agent: *\n";
+	$output .= "Allow: /\n";
+	$output .= "Disallow: /wp-admin/\n";
+	$output .= "Disallow: /wp-includes/\n";
+	$output .= "Disallow: /wp-content/plugins/\n";
+	$output .= "Disallow: /wp-content/cache/\n\n";
+	$output .= "# Рекламные лендинги — noindex в meta, но разрешаем обход\n";
+	$output .= "Allow: /lp/\n\n";
+	$output .= 'Sitemap: ' . home_url( '/wp-sitemap.xml' ) . "\n";
+
+	return $output;
+}
+add_filter( 'robots_txt', 'ovklife_robots_txt', 10, 2 );
+
+/**
+ * Убирает canonical на 404 страницах.
+ * Добавляет noindex для рекламных лендингов.
+ */
+function ovklife_seo_adjustments() {
+	// Рекламные лендинги — noindex.
+	if ( is_page_template( 'templates/landing.php' ) ) {
+		echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+	}
+}
+add_action( 'wp_head', 'ovklife_seo_adjustments', 0 );
 
 /**
  * Выводит мета-тег description.
@@ -248,6 +347,11 @@ add_action( 'wp_head', 'ovklife_meta_description', 2 );
  * Выводит canonical URL.
  */
 function ovklife_canonical_url() {
+	// Нет canonical на 404 и рекламных лендингах.
+	if ( is_404() || is_page_template( 'templates/landing.php' ) ) {
+		return;
+	}
+
 	if ( is_singular() ) {
 		echo '<link rel="canonical" href="' . esc_url( get_permalink() ) . '">' . "\n";
 	} elseif ( is_front_page() ) {
@@ -268,6 +372,9 @@ function ovklife_open_graph() {
 
 	if ( is_singular() && has_post_thumbnail() ) {
 		$og_image = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+	} elseif ( is_front_page() ) {
+		// Hero-изображение как OG-image для главной.
+		$og_image = get_template_directory_uri() . '/assets/images/landing/tild3135-3161-4533-a136-366237376433____1.jpg';
 	}
 
 	if ( is_singular() && has_excerpt() ) {

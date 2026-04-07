@@ -7,34 +7,29 @@
     "dev": "npm run dev --prefix wp-content/themes/ovklife",
     "build": "npm run build --prefix wp-content/themes/ovklife",
     "watch": "npm run watch --prefix wp-content/themes/ovklife",
-
     "phpcs": "bash scripts/phpcs-docker.sh",
     "phpcbf": "bash scripts/phpcbf-docker.sh",
     "phpcs:fix": "bash scripts/phpcbf-docker.sh",
-
     "eslint": "eslint wp-content/themes/ovklife/assets/js/",
     "eslint:fix": "eslint wp-content/themes/ovklife/assets/js/ --fix",
     "eslint:check": "eslint wp-content/themes/ovklife/assets/js/ --max-warnings 0",
-
     "stylelint": "stylelint \"wp-content/themes/ovklife/assets/css/**/*.{css,scss}\"",
     "stylelint:fix": "stylelint \"wp-content/themes/ovklife/assets/css/**/*.{css,scss}\" --fix",
-
     "format": "prettier --write \"wp-content/themes/ovklife/**/*.{js,css,scss,json,md}\"",
     "format:check": "prettier --check \"wp-content/themes/ovklife/**/*.{js,css,scss,json,md}\"",
-
     "validate": "npm run phpcs && npm run eslint:check && npm run stylelint && npm run format:check",
     "fix": "npm run phpcbf; npm run eslint:fix && npm run stylelint:fix && npm run format",
-
     "prepare": "husky install"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "stylelint": "^16.1.0",
-    "stylelint-config-standard": "^36.0.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "husky": "^9.1.0",
-    "lint-staged": "^15.2.0"
+    "sharp": "^0.34.5",
+    "stylelint": "^16.1.0",
+    "stylelint-config-standard": "^36.0.0"
   },
   "lint-staged": {
     "wp-content/themes/ovklife/**/*.php": [

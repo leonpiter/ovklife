@@ -16,13 +16,38 @@ defined( 'ABSPATH' ) || exit;
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<?php // Preconnect для внешних ресурсов (Google Fonts). ?>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<?php // Preload Hero-изображения для ускорения LCP. ?>
+	<?php if ( is_front_page() ) : ?>
+	<link rel="preload"
+		as="image"
+		href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/landing/tild3135-3161-4533-a136-366237376433____1.jpg' ); ?>"
+		fetchpriority="high">
+	<?php endif; ?>
+
+	<?php // Preload основного начертания шрифта Inter. ?>
+	<link rel="preload"
+		as="font"
+		type="font/woff2"
+		href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjQ.woff2"
+		crossorigin>
+
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class( 'landing-page' ); ?>>
 <?php wp_body_open(); ?>
 
+<?php // Skip-to-content для скринридеров и keyboard navigation. ?>
+<a href="#main-content" class="skip-to-content">
+	<?php esc_html_e( 'Перейти к основному содержимому', 'ovklife' ); ?>
+</a>
+
 <!-- Навигация -->
-<header class="landing-nav">
+<header class="landing-nav" role="banner">
 	<div class="landing-nav__inner landing-container">
 		<!-- Логотип -->
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>"
@@ -100,4 +125,4 @@ defined( 'ABSPATH' ) || exit;
 </div>
 
 <!-- Основной контент -->
-<main class="landing-main">
+<main class="landing-main" id="main-content" role="main">
