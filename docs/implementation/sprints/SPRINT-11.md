@@ -1,17 +1,17 @@
-# Sprint-11: Аналитика, UTM-трекинг и серверная оптимизация
+# Sprint-11: Аналитика, UTM-трекинг, A/B тестирование и серверная оптимизация
 
 > **Статус:** ⏳ Ожидает
-> **Ветка:** `feature/sprint-11-analytics-server`
-> **Зависимости:** Sprint-04 (SEO-инфраструктура), Sprint-09 (лендинги), Sprint-10 (квиз)
-> **Результат:** Яндекс.Метрика с целями, UTM-трекинг, A/B тестирование, .htaccess, SEO мета-бокс
+> **Ветка:** `feature/sprint-11-analytics-ab`
+> **Зависимости:** Sprint-04 (SEO), Sprint-09 (модульные лендинги), Sprint-10 (квиз)
+> **Результат:** Яндекс.Метрика с целями, UTM-трекинг, A/B тестирование секций, .htaccess, SEO мета-бокс
 >
-> **⚠️ Примечание:** Этот спринт объединяет 5 разнородных модулей. При необходимости можно разделить на два: Sprint-11a (аналитика + UTM + A/B) и Sprint-11b (.htaccess + SEO мета-бокс). Оценить по трудоёмкости после Sprint-10.
+> **⚠️ Примечание:** Можно разделить на Sprint-11a (аналитика + UTM + A/B) и Sprint-11b (.htaccess + SEO мета-бокс).
 
 ---
 
 ## Контекст
 
-После Sprint-10 у нас есть свёрстанный сайт с услугами, проектами, блогом и лендингами. Но для запуска Яндекс.Директ и SEO-продвижения критически не хватает: аналитика (Яндекс.Метрика с целями конверсий), UTM-трекинг для отслеживания рекламных кампаний, A/B тестирование для оптимизации конверсий, серверная оптимизация (.htaccess), и SEO мета-бокс в админке для управления мета-тегами.
+После Sprint-09 у нас есть модульная система лендингов с фильтром `ovklife_section_variant`. Sprint-11 подключает A/B тестирование через этот фильтр — **без модификации ядра** (`landing-sections.php`). Cookie определяет вариант, данные уходят в Яндекс.Метрику.
 
 ---
 
@@ -19,11 +19,47 @@
 
 | Решение | Обоснование |
 |---------|-------------|
-| Яндекс.Метрика через Customizer (ID) | Легко менять без кода, не захардкожено |
-| UTM-модуль в теме | Полный контроль, передача UTM в формы и квиз |
-| A/B тесты на cookie | Серверная определённость варианта, кэш-совместимость |
-| SEO мета-бокс без плагина | Лёгкий, только нужные поля (title, description) |
-| .htaccess через тему | Версионирование в Git, предсказуемость |
+| A/B через фильтр `ovklife_section_variant` | Фундамент заложен в Sprint-03, подключаемся без правки ядра |
+| Cookie для персистентности A/B | Пользователь видит один вариант на протяжении 30 дней |
+| Взвешенный рандом (50/50, 70/30) | Гибкое распределение трафика между вариантами |
+| Конфигурация тестов в коде | Массив в `inc/ab-testing.php`, не через БД/админку |
+| `wp_localize_script` → Метрика | PHP определяет вариант → JS отправляет в Метрику как параметр визита |
+| UTM в cookie (30 дней) | Сохранение источника при повторных визитах |
+
+---
+
+## Архитектура A/B тестирования
+
+### Поток данных
+
+```
+Пользователь → любая landing-страница
+  → ovklife_resolve_section_variant('hero')
+    → фильтр ovklife_section_variant
+      → ovklife_ab_section_variant('hero')
+        → проверка cookie 'ovklife_ab_hero_video'
+          → есть → return сохранённый вариант
+          → нет → взвешенный рандом → setcookie → return
+  → include sections/hero/{variant}.php
+  → wp_localize_script → window.ovklife.abTests
+  → JS → ym(ID, 'params', { ab_hero_video: 'video' })
+```
+
+### Конфигурация тестов
+
+```php
+// inc/ab-testing.php
+'hero_video' => [
+    'section'  => 'hero',
+    'variants' => ['default' => 50, 'video' => 50],  // 50/50
+    'active'   => true,
+],
+'hero_engineer' => [
+    'section'  => 'hero',
+    'variants' => ['default' => 50, 'engineer' => 50],
+    'active'   => false,  // включить после завершения первого теста
+],
+```
 
 ---
 
@@ -31,100 +67,98 @@
 
 ### 1. Яндекс.Метрика и аналитика
 - [ ] Создать `inc/analytics.php` — модуль аналитики
-- [ ] Добавить секцию «Аналитика» в `inc/customizer.php`:
-  - Поле: ID Яндекс.Метрики
-  - Поле: код GA4 (опционально)
-  - Поле: мета-тег Яндекс.Вебмастер верификации
-  - Поле: мета-тег Google Search Console верификации
-- [ ] Вывод счётчика Метрики в `wp_head` (или `wp_footer`)
-- [ ] Настроить цели Метрики через JS-API:
-  - `form_submit` — отправка формы заявки
+- [ ] Секция «Аналитика» в `inc/customizer.php`:
+  - ID Яндекс.Метрики
+  - Код GA4 (опционально)
+  - Мета-тег Яндекс.Вебмастер верификации
+  - Мета-тег Google Search Console верификации
+- [ ] Вывод счётчика Метрики в `wp_footer`
+- [ ] Цели Метрики через JS-API:
+  - `form_submit` — отправка формы
   - `quiz_complete` — завершение квиза
   - `phone_click` — клик по телефону
-  - `telegram_click` — клик по Telegram-ссылке
-  - `scroll_50` — прокрутка 50% страницы
-  - `scroll_100` — прокрутка 100% страницы
-- [ ] Обновить `functions.php` — подключить analytics.php
+  - `telegram_click` — клик по Telegram
+  - `scroll_50` / `scroll_100` — глубина скролла
 
 ### 2. UTM-трекинг
-- [ ] Создать `inc/utm.php` — модуль UTM-параметров
+- [ ] Создать `inc/utm.php`
 - [ ] Чтение UTM из URL: utm_source, utm_medium, utm_campaign, utm_content, utm_term
-- [ ] Сохранение UTM в cookie (30 дней) при первом визите
-- [ ] Передача UTM в скрытые поля форм обратной связи
+- [ ] Сохранение UTM в cookie (30 дней)
+- [ ] Передача UTM в скрытые поля форм
 - [ ] Передача UTM в данные квиза (Sprint-10)
-- [ ] Передача UTM как параметры визита в Яндекс.Метрику
-- [ ] PHP-функция `ovklife_get_utm()` — получить текущие UTM из cookie
+- [ ] Передача UTM как параметры визита в Метрику
+- [ ] PHP-функция `ovklife_get_utm()`
 
-### 3. A/B тестирование
-- [ ] Создать `inc/ab-testing.php` — модуль A/B тестов
-- [ ] Определение варианта (A/B) через cookie при первом визите
-- [ ] PHP-функция `ovklife_get_ab_variant( $test_name )` — получить вариант
-- [ ] JS-функция для передачи варианта в Метрику (`ym(ID, 'params', {ab_test: variant})`)
-- [ ] Поддержка нескольких одновременных тестов
-- [ ] Интеграция с шаблоном лендинга — условный вывод секций по варианту
+### 3. A/B тестирование секций лендинга
+- [ ] Создать `inc/ab-testing.php`:
+  - `ovklife_ab_tests_config()` — конфигурация активных тестов
+  - `ovklife_get_ab_variant( $test_name )` — вариант из cookie или рандом
+  - `ovklife_weighted_random( $weights )` — взвешенный выбор
+  - `ovklife_get_active_ab_tests()` — все активные тесты для JS
+  - `ovklife_ab_section_variant()` — фильтр для `ovklife_section_variant`
+- [ ] Подключить фильтр: `add_filter( 'ovklife_section_variant', 'ovklife_ab_section_variant', 20, 2 )`
+- [ ] Создать `assets/js/landing/ab-tracker.js`:
+  - Читает `window.ovklife.abTests`
+  - Отправляет `ym(ID, 'params', { ab_hero_video: 'video' })`
+- [ ] `wp_localize_script` в enqueue.php — передача abTests + metrikaId + utm в JS
+- [ ] Первый тест: Hero default vs Hero video (50/50)
 
 ### 4. SEO мета-бокс в админке
-- [ ] Создать `inc/meta-boxes.php` — SEO мета-бокс
-- [ ] Мета-бокс отображается для: post, page, service, project
-- [ ] Поля:
-  - SEO Title (кастомный `<title>`)
-  - Meta Description (кастомный `<meta description>`)
-  - Focus Keyword (информационное поле)
-  - noindex checkbox (исключить из индексации)
-- [ ] Сохранение: `_ovklife_seo_title`, `_ovklife_seo_description`, `_ovklife_seo_noindex`
+- [ ] Создать `inc/meta-boxes.php`
+- [ ] Мета-бокс для: post, page, service, project
+- [ ] Поля: SEO Title, Meta Description, Focus Keyword, noindex checkbox
 - [ ] Nonce-защита при сохранении
-- [ ] Интеграция с `inc/seo.php` — использование кастомных значений если заполнены
+- [ ] Интеграция с `inc/seo.php`
 
 ### 5. Серверная оптимизация (.htaccess)
-- [ ] Создать `.htaccess` (шаблон для production)
-- [ ] Gzip/Deflate сжатие:
-  - text/html, text/css, text/javascript, application/javascript
-  - application/json, image/svg+xml, text/xml
-- [ ] Browser caching (Cache-Control + Expires):
-  - Изображения: 30 дней
-  - CSS/JS: 7 дней (с hash-версионированием от Vite)
-  - Шрифты: 365 дней
-  - HTML: no-cache (всегда свежий)
-- [ ] Security headers:
-  - X-Content-Type-Options: nosniff
-  - X-Frame-Options: SAMEORIGIN
-  - Referrer-Policy: strict-origin-when-cross-origin
-- [ ] Запрет доступа к sensitive файлам (.env, wp-config.php, .git)
-- [ ] HTTP → HTTPS редирект (если не на уровне nginx)
+- [ ] Gzip/Deflate сжатие (text/html, css, js, json, svg)
+- [ ] Browser caching: изображения 30 дней, CSS/JS 7 дней, шрифты 365 дней
+- [ ] Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy
+- [ ] Запрет доступа к .env, wp-config.php, .git
 
 ### 6. Проверка
-- [ ] Яндекс.Метрика: счётчик работает, цели срабатывают
-- [ ] UTM-параметры: сохраняются в cookie, передаются в формы
-- [ ] A/B тест: разные варианты показываются, данные в Метрику уходят
-- [ ] SEO мета-бокс: кастомные title/description отображаются в `<head>`
-- [ ] .htaccess: gzip работает (`curl -H "Accept-Encoding: gzip" -I url`)
-- [ ] .htaccess: кэш-заголовки приходят
+- [ ] Метрика: счётчик работает, цели срабатывают
+- [ ] UTM: сохраняются в cookie, передаются в формы
+- [ ] A/B: разные варианты Hero показываются при очистке cookie
+- [ ] A/B: данные уходят в Метрику (проверить через devtools → Network)
+- [ ] A/B: при повторном визите — тот же вариант (cookie)
+- [ ] SEO мета-бокс: title/description в `<head>`
+- [ ] .htaccess: gzip и кэш-заголовки
 - [ ] `npm run validate` — 0 ошибок
 
 ---
 
-## Файлы для создания/модификации
+## Файлы
+
+### СОЗДАТЬ
+
+| Файл | Назначение |
+|------|------------|
+| `inc/analytics.php` | Яндекс.Метрика, GA4, цели |
+| `inc/utm.php` | UTM-трекинг, cookie, формы |
+| `inc/ab-testing.php` | A/B тесты через cookie + фильтр |
+| `inc/meta-boxes.php` | SEO мета-бокс в админке |
+| `assets/js/landing/ab-tracker.js` | JS-трекинг A/B в Метрику |
+| `.htaccess` | Серверная оптимизация |
+
+### МОДИФИЦИРОВАТЬ
 
 | Файл | Действие |
 |------|----------|
-| `inc/analytics.php` | СОЗДАТЬ |
-| `inc/utm.php` | СОЗДАТЬ |
-| `inc/ab-testing.php` | СОЗДАТЬ |
-| `inc/meta-boxes.php` | СОЗДАТЬ |
-| `inc/customizer.php` | МОДИФИЦИРОВАТЬ (секция аналитики) |
-| `inc/seo.php` | МОДИФИЦИРОВАТЬ (интеграция с мета-бокс) |
-| `functions.php` | МОДИФИЦИРОВАТЬ (подключение модулей) |
-| `assets/js/landing/main.js` | МОДИФИЦИРОВАТЬ (Метрика цели, UTM) |
-| `.htaccess` | СОЗДАТЬ (шаблон для production) |
+| `inc/customizer.php` | +секция «Аналитика» |
+| `inc/seo.php` | +интеграция с мета-бокс |
+| `inc/enqueue.php` | +wp_localize_script (abTests, utm, metrikaId) |
+| `functions.php` | +require analytics, utm, ab-testing, meta-boxes |
+| `assets/js/landing/main.js` | +import ab-tracker |
 
 ---
 
 ## Результат спринта
 
 После завершения Sprint-11:
-- Яндекс.Метрика работает с 6 целями конверсий
-- UTM-трекинг сохраняет параметры и передаёт в формы/квиз
-- A/B тестирование готово к использованию на лендингах
-- SEO мета-бокс в админке для всех типов контента
-- .htaccess оптимизирует производительность (gzip, кэш, security)
-- **Готовность к запуску Яндекс.Директ с полным отслеживанием**
+- Яндекс.Метрика с 6 целями конверсий
+- UTM-трекинг в cookie → формы → квиз → Метрика
+- A/B тестирование секций лендинга (Hero video vs default)
+- SEO мета-бокс для всех типов контента
+- .htaccess: gzip, кэш, security
+- **Готовность к запуску Яндекс.Директ с полным A/B и отслеживанием**
