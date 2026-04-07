@@ -75,3 +75,53 @@ function ovklife_telegram_link( $username = 'engineer_integrator', $css_class = 
 		esc_html( $username )
 	);
 }
+
+/**
+ * Выводит <picture> элемент с WebP + JPG fallback.
+ *
+ * Проверяет наличие .webp версии рядом с оригиналом.
+ * Если WebP нет — выводит обычный <img>.
+ *
+ * @param string $src       URL изображения (JPG).
+ * @param string $alt       Alt-текст.
+ * @param string $css_class CSS-класс для <img>.
+ * @param array  $attrs     Дополнительные атрибуты (width, height, loading, fetchpriority).
+ */
+function ovklife_picture( $src, $alt, $css_class = '', $attrs = [] ) {
+	$webp_src = preg_replace( '/\.jpe?g$/i', '.webp', $src );
+
+	// Проверяем наличие WebP файла.
+	$theme_dir = get_template_directory();
+	$theme_uri = get_template_directory_uri();
+	$webp_path = str_replace( $theme_uri, $theme_dir, $webp_src );
+	$has_webp  = file_exists( $webp_path );
+
+	// Собираем строку атрибутов.
+	$attr_str = '';
+	$defaults = [
+		'width'   => '',
+		'height'  => '',
+		'loading' => 'lazy',
+	];
+	$attrs    = array_merge( $defaults, $attrs );
+
+	foreach ( $attrs as $key => $value ) {
+		if ( '' !== $value ) {
+			$attr_str .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+		}
+	}
+
+	$class_attr = $css_class ? ' class="' . esc_attr( $css_class ) . '"' : '';
+
+	if ( $has_webp ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $class_attr и $attr_str уже экранированы через esc_attr() выше.
+		echo '<picture>';
+		echo '<source srcset="' . esc_url( $webp_src ) . '" type="image/webp">';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '"' . $class_attr . $attr_str . '>';
+		echo '</picture>';
+	} else {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '"' . $class_attr . $attr_str . '>';
+	}
+}

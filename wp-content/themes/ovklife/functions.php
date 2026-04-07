@@ -44,6 +44,11 @@ require_once get_template_directory() . '/inc/landing-helpers.php';
 require_once get_template_directory() . '/inc/landing-sections.php';
 
 /**
+ * Компонент хлебных крошек (HTML + навигация).
+ */
+require_once get_template_directory() . '/inc/breadcrumbs.php';
+
+/**
  * Настройка темы — вызывается после инициализации.
  */
 function ovklife_setup() {
