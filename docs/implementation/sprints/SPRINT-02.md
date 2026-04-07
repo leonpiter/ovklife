@@ -1,6 +1,6 @@
 # Sprint-02: Лейаут лендинга — header, footer, каркас front-page
 
-> **Статус:** ⏳ Ожидает
+> **Статус:** ✅ Готов (07.04.2026)
 > **Ветка:** `feature/sprint-02-landing-layout`
 > **Зависимости:** Sprint-01 (CSS-инфраструктура, дизайн-токены)
 > **Результат:** рабочий каркас главной страницы с навигацией и подвалом
@@ -34,31 +34,31 @@ CSS-инфраструктура и дизайн-токены готовы (Spri
 ## Чеклист задач
 
 ### 1. Header лендинга
-- [ ] Создать `header-landing.php` — `<!DOCTYPE>`, `<head>`, `wp_head()`, `<body>`
-- [ ] Верстка навигации: бургер-кнопка (BEM: `.landing-nav`, `.landing-nav__burger`)
-- [ ] Верстка выдвижной панели: меню, телефон, Telegram, кнопка закрытия
-- [ ] CSS: `assets/css/landing/layouts/nav.css` — стили навигации
-- [ ] JS: `assets/js/landing/mobile-menu.js` — открытие/закрытие, overlay
+- [x] Создать `header-landing.php` — `<!DOCTYPE>`, `<head>`, `wp_head()`, `<body>`
+- [x] Верстка навигации: бургер-кнопка (BEM: `.landing-nav`, `.landing-nav__burger`)
+- [x] Верстка выдвижной панели: меню, телефон, Telegram, кнопка закрытия
+- [x] CSS: `assets/css/landing/layouts/nav.css` — стили навигации
+- [x] JS: `assets/js/landing/mobile-menu.js` — открытие/закрытие, overlay, Escape
 
 ### 2. Footer лендинга
-- [ ] Создать `footer-landing.php` — `wp_footer()`, `</body>`, `</html>`
-- [ ] Верстка: контакты (телефон, Telegram), копирайт, соцссылки
-- [ ] CSS: `assets/css/landing/layouts/footer.css`
+- [x] Создать `footer-landing.php` — `wp_footer()`, `</body>`, `</html>`
+- [x] Верстка: контакты (телефон, Telegram), копирайт, навигация
+- [x] CSS: `assets/css/landing/layouts/footer.css` — sticky footer на desktop
 
 ### 3. Front-page каркас
-- [ ] Создать `front-page.php` — подключение header/footer + секции через `get_template_part()`
-- [ ] Создать `template-parts/landing/` директорию
-- [ ] Создать заглушки для 6 секций (section-hero.php, section-objects.php, и т.д.)
+- [x] Создать `front-page.php` — подключение header/footer + секции через `get_template_part()`
+- [x] Создать `template-parts/landing/` директорию
+- [x] Создать заглушки для 6 секций (section-hero.php, section-objects.php, и т.д.)
 
 ### 4. Smooth-scroll
-- [ ] `assets/js/landing/smooth-scroll.js` — плавная прокрутка к якорям (#obekty, #uslugi, и т.д.)
+- [x] `assets/js/landing/smooth-scroll.js` — плавная прокрутка к якорям с offset для фиксированного header
 
 ### 5. Проверка
-- [ ] Открыть главную в браузере — header и footer отображаются
-- [ ] Бургер-меню открывается/закрывается
-- [ ] Якорные ссылки скроллят к секциям
-- [ ] Адаптивность: 320px, 640px, 1200px
-- [ ] `npm run validate` — 0 ошибок
+- [x] Открыть главную в браузере — header и footer отображаются
+- [x] Бургер-меню открывается/закрывается
+- [x] Якорные ссылки скроллят к секциям
+- [x] Адаптивность: 320px, 640px, 1200px
+- [x] `npm run validate` — PHPCS, ESLint, Stylelint, Prettier — 0 ошибок
 
 ---
 

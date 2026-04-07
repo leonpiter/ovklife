@@ -71,7 +71,7 @@
 
 ### 4. Vite-конфигурация
 - [x] Обновить `vite.config.js` — добавить landing entry points
-- [ ] Проверить `npm run build` — сборка обоих entry points *(требуется ручная проверка)*
+- [x] Проверить `npm run build` — сборка обоих entry points
 
 ### 5. WordPress-инфраструктура
 - [x] Обновить `inc/enqueue.php` — функция `ovklife_is_landing_page()` + условная загрузка
@@ -80,13 +80,14 @@
 - [x] Обновить `functions.php` — подключить новые модули
 
 ### 6. Изображения
-- [ ] Скопировать `ovk-life/images/` → `assets/images/landing/` *(требуется ручное копирование)*
+- [x] Скопировать `ovk-life/images/` → `assets/images/landing/`
+- [x] Переименовать ключевые SVG: logo-icon.svg, logo-text.svg, telegram.svg
 - [ ] Оптимизировать SVG (удалить лишние атрибуты) *(Sprint-04)*
 
 ### 7. Проверка
-- [ ] `npm run build` — сборка без ошибок *(требуется ручная проверка)*
-- [ ] `npm run validate` — линтинг пройден *(требуется ручная проверка)*
-- [ ] Файлы в manifest.json: landing + landing-style entries
+- [x] `npm run build` — сборка без ошибок
+- [x] `npm run validate` — PHPCS, ESLint, Stylelint, Prettier — 0 ошибок
+- [x] Файлы в manifest.json: landing + landing-style entries
 
 ---
 
